@@ -127,7 +127,9 @@ func newFuzzEnv(t testing.TB) *fuzzEnv {
 	}
 
 	exports := runtime.NewObject()
-	mod.SetupExports(exports)
+	if err := mod.SetupExports(exports); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	_ = runtime.Set("pb", exports)
 
 	return &fuzzEnv{runtime: runtime, mod: mod}
